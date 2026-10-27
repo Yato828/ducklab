@@ -1,0 +1,27 @@
+{
+  "accepted": true,
+  "physicsValidated": false,
+  "publicationStatus": "requires-simulation-review",
+  "sha256": "cf05651d2708a2f9364212e86b866c97a70ace8131c492500105e8f28bf99afd",
+  "bytes": 793685,
+  "upstreamCommit": "1e79c29c97d8b38aee9eefde77a545860ba7658e",
+  "modelSha256": "07af5e482200dfd2a7bf80ddde371153c88768a3a5aebc2f58ea42136fc7dadb",
+  "inputName": "obs",
+  "outputName": "actions",
+  "observationSize": 61,
+  "actionSize": 14,
+  "operators": [
+    "Div",
+    "Elu",
+    "Gemm",
+    "Sub"
+  ],
+  "operatorCount": 9,
+  "weightElements": 197896,
+  "samples": 32,
+  "seed": 42,
+  "inferenceMsMax": 0.017249999999996435,
+  "inferenceMsMean": 0.015953000000000002,
+  "anatomicalTargetExcursions": 17,
+  "notes": "Offline samples do not establish behavior or stability. Anatomical target excursions preserve upstream position-actuator semantics and require MuJoCo evaluation before publication."
+}

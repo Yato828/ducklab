@@ -1,0 +1,12 @@
+import {useEffect,useRef,useState} from 'react';import type {Simulation} from '../components/SimulationViewport';
+export function useControls(sim:Simulation|null,enabled:boolean,onPause:()=>void,onRestart:()=>void){
+ const pressed=useRef(new Set<string>()),[keys,setKeys]=useState<string[]>([]),callbacks=useRef({onPause,onRestart}),enabledRef=useRef(enabled);callbacks.current={onPause,onRestart};enabledRef.current=enabled;
+ const update=()=>{setKeys([...pressed.current]);};
+ useEffect(()=>{if(!sim)return;let frame=0,last='';const send=()=>{let vx=0,wz=0;const blocked=!enabledRef.current||!!document.querySelector('[role="dialog"]');if(!blocked){const keys=pressed.current;vx=(keys.has('w')?.25:0)-(keys.has('s')?.2:0);wz=(keys.has('a')?1:0)-(keys.has('d')?1:0);const pad=Array.from(navigator.getGamepads?.()??[]).find(Boolean);if(pad&&(Math.abs(pad.axes[0]??0)>.16||Math.abs(pad.axes[1]??0)>.16)){vx=-(pad.axes[1]??0)*((pad.axes[1]??0)>0?.2:.25);wz=-(pad.axes[0]??0);}}const next=`${vx},${wz}`;if(next!==last||vx!==0||wz!==0){sim.setCommand(vx,wz);last=next;}frame=requestAnimationFrame(send);};
+ const down=(e:KeyboardEvent)=>{if((e.target as HTMLElement)?.closest('input,textarea,select,[contenteditable]')||document.querySelector('[role="dialog"]'))return;const map:Record<string,string>={ArrowUp:'w',ArrowDown:'s',ArrowLeft:'a',ArrowRight:'d'};const key=map[e.key]??e.key.toLowerCase();if(['w','a','s','d'].includes(key)){e.preventDefault();pressed.current.add(key);update();}if(!e.repeat&&e.code==='Space'){e.preventDefault();callbacks.current.onPause();}if(!e.repeat&&key==='r'){callbacks.current.onRestart();}};
+ const up=(e:KeyboardEvent)=>{const map:Record<string,string>={ArrowUp:'w',ArrowDown:'s',ArrowLeft:'a',ArrowRight:'d'};pressed.current.delete(map[e.key]??e.key.toLowerCase());update();};
+ const clear=()=>{pressed.current.clear();update();sim.setCommand(0,0);};const visibility=()=>{clear();if(document.hidden&&!sim.getState().paused)sim.pause(true);};
+ send();window.addEventListener('keydown',down);window.addEventListener('keyup',up);window.addEventListener('blur',clear);document.addEventListener('visibilitychange',visibility);return()=>{cancelAnimationFrame(frame);clear();window.removeEventListener('keydown',down);window.removeEventListener('keyup',up);window.removeEventListener('blur',clear);document.removeEventListener('visibilitychange',visibility);};
+ },[sim]);
+ const touch=(key:string,active:boolean)=>{if(active)pressed.current.add(key);else pressed.current.delete(key);update();};return {keys,touch};
+}

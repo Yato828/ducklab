@@ -1,0 +1,61 @@
+{
+  "name": "ducklab",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:web": "vite --config apps/web/vite.config.ts",
+    "dev:api": "tsx apps/api/src/server.ts",
+    "build": "vite build --config apps/web/vite.config.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test packages/movement-dsl/test/*.test.ts packages/solana/test/*.test.ts apps/api/test/*.test.ts",
+    "api:test": "tsx --test apps/api/test/*.test.ts packages/solana/test/*.test.ts",
+    "db:migrate": "tsx packages/database/migrate.ts",
+    "test:browser": "playwright test",
+    "preview": "vite preview --config apps/web/vite.config.ts --host 127.0.0.1"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "3.1157.0",
+    "@aws-sdk/s3-request-presigner": "3.1157.0",
+    "@fastify/cookie": "11.1.4",
+    "@fastify/cors": "11.3.1",
+    "@fastify/helmet": "13.2.0",
+    "@fastify/rate-limit": "11.2.1",
+    "@monaco-editor/react": "4.7.0",
+    "@mujoco/mujoco": "3.11.0",
+    "@solana/spl-token": "0.4.15",
+    "@solana/web3.js": "1.98.4",
+    "@wallet-standard/app": "1.1.1",
+    "acorn": "8.19.0",
+    "bs58": "^6.0.0",
+    "bullmq": "6.5.0",
+    "dotenv": "^16.6.1",
+    "fastify": "5.12.7",
+    "ioredis": "6.0.0",
+    "lucide-react": "^0.468.0",
+    "monaco-editor": "0.57.0",
+    "onnxruntime-web": "1.27.0",
+    "pg": "8.23.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "three": "0.164.1",
+    "tweetnacl": "^1.0.3",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "latest",
+    "@types/node": "latest",
+    "@types/pg": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/three": "0.164.1",
+    "@vitejs/plugin-react": "latest",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vite": "8.3.5"
+  }
+}

@@ -1,0 +1,11 @@
+import * as monaco from 'monaco-editor';
+import { loader } from '@monaco-editor/react';
+import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
+(globalThis as any).MonacoEnvironment={getWorker:()=>new EditorWorker()};
+loader.config({monaco});
+monaco.languages.register({id:'duck'});
+monaco.languages.setMonarchTokensProvider('duck',{tokenizer:{root:[[/\/\/.*$/,'comment'],[/\b(await|for|let|if|else)\b/,'keyword'],[/\bduck\b/,'type'],[/\b(walk|turn|sit|stand|kick|roll|recover|groundPick|wait)\b/,'function'],[/\b\d+(\.\d+)?\b/,'number'],[/"[^"]*"|'[^']*'/,'string']]}});
+monaco.editor.defineTheme('ducklab',{base:'vs',inherit:true,rules:[{token:'comment',foreground:'92988C'},{token:'keyword',foreground:'986B36'},{token:'type',foreground:'335C48'},{token:'function',foreground:'366581'},{token:'number',foreground:'8C5F8B'}],colors:{'editor.background':'#FCFCF8','editorLineNumber.foreground':'#B4B7AD','editor.lineHighlightBackground':'#F2F3EC','editor.selectionBackground':'#F5E7AB','editorCursor.foreground':'#181A1B'}});
+const snippets:Record<string,string>={walk:'walk({ distance: ${1:0.5}, speed: ${2:0.2} });',turn:'turn({ degrees: ${1:90} });',sit:'sit();',stand:'stand();',kick:'kick({ side: "${1:left}" });',roll:'roll();',recover:'recover();',groundPick:'groundPick();',wait:'wait({ seconds: ${1:1} });'};
+monaco.languages.registerCompletionItemProvider('duck',{triggerCharacters:['.'],provideCompletionItems:(model,position)=>{const word=model.getWordUntilPosition(position);return {suggestions:Object.entries(snippets).map(([name,insertText])=>({label:name,kind:monaco.languages.CompletionItemKind.Method,insertText,insertTextRules:monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,range:new monaco.Range(position.lineNumber,word.startColumn,position.lineNumber,word.endColumn)}))};}});
+export {monaco};

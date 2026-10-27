@@ -1,0 +1,1 @@
+{"name":"@ducklab/training-worker","version":"0.1.0","private":true,"type":"module","scripts":{"start":"tsx src/worker.ts"},"dependencies":{"bullmq":"^5.58.5","ioredis":"^5.7.0","pg":"^8.16.3"}}

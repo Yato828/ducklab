@@ -1,0 +1,16 @@
+[toolchain]
+anchor_version = "0.32.1"
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.localnet]
+ducklab_marketplace = "Fg6PaFpoGXkYsidMpWxTWqkZ7FEfcYkgMQHG5GZKbS"
+
+[provider]
+cluster = "Localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "npx tsx --test ../../packages/solana/test/*.test.ts"

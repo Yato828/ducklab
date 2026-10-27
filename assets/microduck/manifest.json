@@ -1,0 +1,536 @@
+{
+  "simulatorRevision": "ad9d41a763f30dc770817c33d92dcfec0205db1e",
+  "files": [
+    {
+      "path": "apps/web/public/policies/BEST_alpha_sitstand.onnx",
+      "bytes": 793695,
+      "sha256": "c6c40e35e726eabd803d633e090d112994f469921152448367953fbaf9799bc8",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/policies/BEST_alpha_sitstand.onnx"
+    },
+    {
+      "path": "apps/web/public/policies/BEST_alpha_stand.onnx",
+      "bytes": 793705,
+      "sha256": "1569268713e40deea795dd2922dba50d3621e15a872855408b6b1b125b1c094b",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/policies/BEST_alpha_stand.onnx"
+    },
+    {
+      "path": "apps/web/public/policies/BEST_alpha_walking.onnx",
+      "bytes": 793705,
+      "sha256": "e36332d383997d51401897734cd3e79cf5038406feddb18b4d57ecfb141daa6c",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/policies/BEST_alpha_walking.onnx"
+    },
+    {
+      "path": "apps/web/public/policies/BEST_roller.onnx",
+      "bytes": 793685,
+      "sha256": "cf05651d2708a2f9364212e86b866c97a70ace8131c492500105e8f28bf99afd",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/policies/BEST_roller.onnx"
+    },
+    {
+      "path": "apps/web/public/policies/BEST_roller_crouch.onnx",
+      "bytes": 793685,
+      "sha256": "a1a084be240469c76ac9d3fa44d4792f16d4b1da60398b3ecd3cfc5e2244d990",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/policies/BEST_roller_crouch.onnx"
+    },
+    {
+      "path": "apps/web/public/policies/alpha_ground_pick.onnx",
+      "bytes": 793685,
+      "sha256": "ffbf5109982ff999b0ba53afe86b9ae731bbec679d67fb7f8ab4c52152c88872",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/policies/alpha_ground_pick.onnx"
+    },
+    {
+      "path": "apps/web/public/policies/ball_kick_left.onnx",
+      "bytes": 793685,
+      "sha256": "d6928284dccd3dd61e08bf2f760effa74309fbefd97b2b31afb2a60f526d196a",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/policies/ball_kick_left.onnx"
+    },
+    {
+      "path": "apps/web/public/policies/ball_kick_right.onnx",
+      "bytes": 793685,
+      "sha256": "147a32c388c6b19111b3ac3b550a9a6dc8b8bf267118af4d8c3712522eedb5af",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/policies/ball_kick_right.onnx"
+    },
+    {
+      "path": "apps/web/public/policies/roulade.onnx",
+      "bytes": 793685,
+      "sha256": "3d60da08fc13f29c1b57f41977aa898132c0d60042100149d8e775affcbca32b",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/policies/roulade.onnx"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/kinematics.json",
+      "bytes": 26666,
+      "sha256": "099c64fa03280514eed881accf563061a640eb7800d5ce15be5af92d1f63d38b",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/kinematics.json"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/kinematics_rollers.json",
+      "bytes": 29666,
+      "sha256": "4a0c4015ca17241b370739459c0e7e03afd1aa4741f86a2adcc60c6e2c9b33a2",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/kinematics_rollers.json"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/ankle_l_v1.stl",
+      "bytes": 79484,
+      "sha256": "74f9a51e15ac8fef93fc2efa35b61dc53cf832d798f75c3229700bd9b3aed4c4",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/ankle_l_v1.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/ankle_left.stl",
+      "bytes": 58284,
+      "sha256": "df5d7f04d63390a1e263e0138ee94e1aec2ff2b55cf63729f4ec461b25c1c1f0",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/ankle_left.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/ankle_r_v1.stl",
+      "bytes": 69484,
+      "sha256": "c200102fb6f067cbec73f048fe2020b127e61d47fcffd7dbd84c90439767fd3f",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/ankle_r_v1.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/ankle_right.stl",
+      "bytes": 51584,
+      "sha256": "48b8551a13d22cc8752ddf3148796b357a6cbd6e2ecbd93c3ecdfbf55e533e72",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/ankle_right.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/banana_pcb_locker.stl",
+      "bytes": 11634,
+      "sha256": "2e51f6e23e4dbea660a9dbadcd763bbc77d48a7e3e0a58f047eab45554e07b55",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/banana_pcb_locker.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/bearing_roll.stl",
+      "bytes": 30284,
+      "sha256": "fa0da0a5eef428a41da6e9639f75120781594e600c5db7518621750221669849",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/bearing_roll.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/bottom_head_shell.stl",
+      "bytes": 231334,
+      "sha256": "331a361406e77c05256e5064197f785ac1e9c8f091079a3519c2e33f28ae5ebc",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/bottom_head_shell.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/elec_rpi_robot_hat_pcb.stl",
+      "bytes": 225434,
+      "sha256": "acc66b75f2ff26f42339577c38c6f348ec73c4fbb52912637ba5244eb1a78ebb",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/elec_rpi_robot_hat_pcb.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/face_part.stl",
+      "bytes": 136784,
+      "sha256": "47ad1137a68bf72b2c93f1bf4836f18fb9a8d21a4f8f86fbe761b9871233fcce",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/face_part.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/foot_left.stl",
+      "bytes": 241934,
+      "sha256": "b7749b1f4fd9e7faf8180772d7ce8254139c60bc43aee463ec76afc86212d59c",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/foot_left.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/foot_right.stl",
+      "bytes": 246084,
+      "sha256": "e2aba02ec1b949bc8a5a77ad3d0af9009dee80c100aa4bbfcf336f1fa5ef206f",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/foot_right.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/hip_l.stl",
+      "bytes": 229134,
+      "sha256": "dbdf6e7f5587385c0f6a77b407931b30e81c9a212dac7c52b4e0884156049056",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/hip_l.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/jaw.stl",
+      "bytes": 120834,
+      "sha256": "90afa64e47ef237f0f58d6f4830dc3cd6215328ed8a639b1e1a9eb2157307f4a",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/jaw.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/jaw_soft.stl",
+      "bytes": 84084,
+      "sha256": "6c3ebb578ea5e6d7b995baca9b42ef7c9f9858b56dedf6f0d949f5e6ea9d3ef2",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/jaw_soft.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/left_shell.stl",
+      "bytes": 256334,
+      "sha256": "c31e71e2e55c5daccfef738c80053104ba2fb3589a0836ab1b6ebb5c380a05ae",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/left_shell.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/leg.stl",
+      "bytes": 166434,
+      "sha256": "bfbc6ae5faefc56bd65d860cf3410a08e8286717063584f15b56bbd5302b20f8",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/leg.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/lens.stl",
+      "bytes": 23484,
+      "sha256": "b9b86fce70198040781a739e2c15d2996b549b25d73b7544005ae08a415b486e",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/lens.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/m12_lens_holder.stl",
+      "bytes": 98334,
+      "sha256": "d96825a096d5d3d5d252086cf0cdb3f5bc22d9f0baef0a3f97a85bae1617be99",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/m12_lens_holder.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/motor_support.stl",
+      "bytes": 45284,
+      "sha256": "d6725004f0a85a5cf0161214ea0d39fb6f14ee3563c9a96cd5aad725b5e2a716",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/motor_support.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/neck.stl",
+      "bytes": 18384,
+      "sha256": "3cb654ee9387d55c7d10d40fc84bb7cbf3cedb3243d1da499cf01c54d366079c",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/neck.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/neck_pitch.stl",
+      "bytes": 85284,
+      "sha256": "dbd6fcbf8b8f27a8364d5bcae2b9a537d7e384325b44a653b360139b6fa1da2f",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/neck_pitch.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/noenoeil.stl",
+      "bytes": 12384,
+      "sha256": "55f3167627f6fbd1a19966f92396adf2ccd55795b13ded3b9f52705ba8a7ab77",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/noenoeil.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/np_f970.stl",
+      "bytes": 247734,
+      "sha256": "01fbacc788b53ebb7648cda07090133b8c696da31d700c560f45189494977871",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/np_f970.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/pcb__raspberry_pi_zero_2_w.stl",
+      "bytes": 262184,
+      "sha256": "43d8368ced3d623eaa5ef538e8361f5878b85931b7cd469a4488eee7aa00bd91",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/pcb__raspberry_pi_zero_2_w.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/power_support.stl",
+      "bytes": 128234,
+      "sha256": "4aee9ddf8c12478d334f3d8d9e65af712072bef241283a08c895606fc2e3d9e8",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/power_support.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/right_shell.stl",
+      "bytes": 256384,
+      "sha256": "c346581c2e3c2c189ea49372a147dfbc0dca89db4ec02f9f230921e480e762a7",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/right_shell.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/rim.stl",
+      "bytes": 28884,
+      "sha256": "a6d58f80ec60041e721cba1de7af5c834700166a5c10e7f68d1a2b79c7b78cb0",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/rim.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/roller_blade.stl",
+      "bytes": 262184,
+      "sha256": "a8b0e6dbdb593eceaba1a0cc2a70ad8aac56f4c3b22676dbfb97409c1a094615",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/roller_blade.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/seeed_bearing__configuration__22x16x4.stl",
+      "bytes": 260134,
+      "sha256": "8551dc99cbdc012bd261c2a175f2cc766dd6aed0786781b35f8381cd3aa95b34",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/seeed_bearing__configuration__22x16x4.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/seeed_bearing__configuration_default.stl",
+      "bytes": 260084,
+      "sha256": "e4338e0e6c7adeb52a35e02d6fa5babe761e8752ffa0fc2e31b0ba672c18630d",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/seeed_bearing__configuration_default.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/soft_mouth_top.stl",
+      "bytes": 98384,
+      "sha256": "451f53d30350552cb6e26f777698272f7c3fa557f389adb24f94c75a201e67cd",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/soft_mouth_top.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/sole_left.stl",
+      "bytes": 197384,
+      "sha256": "357f80bb46855e3ce50f817705acd80471dae90b4ee6b4a0a948614a7daeddb1",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/sole_left.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/sole_right.stl",
+      "bytes": 198684,
+      "sha256": "07801107a36dbc1c2b83b3b64ad98be39ba662a8a7fa0b62a29119b201f41fe6",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/sole_right.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/speaker.stl",
+      "bytes": 684,
+      "sha256": "0ef54df86c6093c166d73e33dc0b8364ef5643a7a1b1dacaba577be5a9c06c32",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/speaker.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/tire.stl",
+      "bytes": 88284,
+      "sha256": "14c08d73185a4b521897aca74fb8b2a6d306a20d80e8822aa56cf1b4ace29bec",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/tire.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/top_head_shell.stl",
+      "bytes": 194984,
+      "sha256": "a59823b8f2ab23d530e6b071559f7fd308851ae035b7cb4d0b7baf7edef4b3e3",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/top_head_shell.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/trunk_base.stl",
+      "bytes": 38734,
+      "sha256": "4b84ebe28041e6236ecafd4a26cebe537e21c14423e6acded3d78478c7650ed7",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/trunk_base.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/upper_leg_left.stl",
+      "bytes": 133134,
+      "sha256": "a626dafcdd0074fd4e79e604d377495d304d222f1afd27b13487b7248b35a0b8",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/upper_leg_left.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/upper_leg_right.stl",
+      "bytes": 124434,
+      "sha256": "97fd516a4c0e593fef9e22b1521d60ca86bd91966a4328db0834bac5ba1cabdf",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/upper_leg_right.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/upper_leg_rigidity_plate.stl",
+      "bytes": 45084,
+      "sha256": "96e50158d44ef97fc46f5d6330b6bb02fb93116790ae892a170fdd052e696aba",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/upper_leg_rigidity_plate.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/xl330.stl",
+      "bytes": 45584,
+      "sha256": "d3c7b71750397083d3dfbad395fd8ac794763f43e2ea2b5006da5840c976fc82",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/xl330.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/yaw2roll.stl",
+      "bytes": 119884,
+      "sha256": "c20cbdd8a9d52f789ec5a4b0d4a173a225652c6bc4610d555ea309c7a0e0d559",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/yaw2roll.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/meshes/yaw_roll_motion.stl",
+      "bytes": 62184,
+      "sha256": "ae3740fde29a261b79650a25825baedd84d538fc67b6b20b79589125e5e05592",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/meshes/yaw_roll_motion.stl"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/microduck.glb",
+      "bytes": 1279444,
+      "sha256": "ad0b8d1c886a857fd09d337be11e731f4ac72bf099b0af63081031f97ed6eadb",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/microduck.glb"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/robot_allcollisions.xml",
+      "bytes": 32898,
+      "sha256": "7a6fdf437f5a80c7348ad801f43f906b997a834389cb70cca5e1e8517ba38044",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/robot_allcollisions.xml"
+    },
+    {
+      "path": "apps/web/public/robot/mjlab/robot_allcollisions_rollers.xml",
+      "bytes": 35688,
+      "sha256": "c201a72ecbc4dd8e110c840cb79b1647aab59e6c76db7369a88c34a33307447e",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/public/robot/mjlab/robot_allcollisions_rollers.xml"
+    },
+    {
+      "path": "assets/upstream/microduck/LICENSE",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck/96b89d8613f06722c1d64ce75ab0d7124fed9d8f/LICENSE"
+    },
+    {
+      "path": "assets/upstream/microduck/duckctl/pyproject.toml",
+      "bytes": 1517,
+      "sha256": "183208c0c187e2459da356ac15bd9fd620ed7116b2e895d68f137f0b2e01b30c",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck/96b89d8613f06722c1d64ce75ab0d7124fed9d8f/duckctl/pyproject.toml"
+    },
+    {
+      "path": "assets/upstream/microduck/kinematics/assets/alpha/robot_walk.xml",
+      "bytes": 6881,
+      "sha256": "078693dff3bcd5e69eb6cc483974178e1511a11f762b1a4dd00370bc5d58b8a8",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck/96b89d8613f06722c1d64ce75ab0d7124fed9d8f/kinematics/assets/alpha/robot_walk.xml"
+    },
+    {
+      "path": "assets/upstream/microduck_rl/LICENSE",
+      "bytes": 11351,
+      "sha256": "2d3fd9ffffa70a4307498ec630b14a6b4731e010f8ddda92686eaf65733c2dfe",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck_rl/1e79c29c97d8b38aee9eefde77a545860ba7658e/LICENSE"
+    },
+    {
+      "path": "assets/upstream/microduck_rl/pyproject.toml",
+      "bytes": 3041,
+      "sha256": "269181880f9f50d1890426cdbf5262571b193a1b87e6f91cde5f7e402902c1cb",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck_rl/1e79c29c97d8b38aee9eefde77a545860ba7658e/pyproject.toml"
+    },
+    {
+      "path": "assets/upstream/microduck_rl/scripts/export.py",
+      "bytes": 11130,
+      "sha256": "3ea14f48901156ec4a8dd5f8ed7d59041a1ba31b22beb5183d5258fc854e0bc5",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck_rl/1e79c29c97d8b38aee9eefde77a545860ba7658e/scripts/export.py"
+    },
+    {
+      "path": "assets/upstream/microduck_rl/scripts/infer_policy.py",
+      "bytes": 71036,
+      "sha256": "69db723bb2fc237824190ba4039e31c2ac9cabf347b2b493d66d0c9df5c3ddc2",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck_rl/1e79c29c97d8b38aee9eefde77a545860ba7658e/scripts/infer_policy.py"
+    },
+    {
+      "path": "assets/upstream/microduck_rl/src/mjlab_microduck/robot/microduck/robot_allcollisions.xml",
+      "bytes": 32898,
+      "sha256": "7a6fdf437f5a80c7348ad801f43f906b997a834389cb70cca5e1e8517ba38044",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck_rl/1e79c29c97d8b38aee9eefde77a545860ba7658e/src/mjlab_microduck/robot/microduck/robot_allcollisions.xml"
+    },
+    {
+      "path": "assets/upstream/microduck_rl/src/mjlab_microduck/robot/microduck/robot_walk.xml",
+      "bytes": 32017,
+      "sha256": "07af5e482200dfd2a7bf80ddde371153c88768a3a5aebc2f58ea42136fc7dadb",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck_rl/1e79c29c97d8b38aee9eefde77a545860ba7658e/src/mjlab_microduck/robot/microduck/robot_walk.xml"
+    },
+    {
+      "path": "assets/upstream/microduck_rl/src/mjlab_microduck/robot/microduck/scene_walk.xml",
+      "bytes": 2341,
+      "sha256": "6e23146c1a5025473b55ec94cbe37b08104ca388b7eb005ea277f8230736c8be",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck_rl/1e79c29c97d8b38aee9eefde77a545860ba7658e/src/mjlab_microduck/robot/microduck/scene_walk.xml"
+    },
+    {
+      "path": "assets/upstream/simulator/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/LICENSE"
+    },
+    {
+      "path": "assets/upstream/simulator/app/package-lock.json",
+      "bytes": 79223,
+      "sha256": "7f247bf2a1d5b1a997ecd90631654a368bf55b2b38899be4351775d3469981da",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/package-lock.json"
+    },
+    {
+      "path": "assets/upstream/simulator/app/package.json",
+      "bytes": 684,
+      "sha256": "14d64bf72dffc1fb9b55ca1410c406a69b23f5a956da169b36debc1d962087f3",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/package.json"
+    },
+    {
+      "path": "assets/upstream/simulator/app/src/game/constants.js",
+      "bytes": 6204,
+      "sha256": "7342a74e19a77ccab0b25a146815c1d045f51e16c9cf5e4d74974ca67cb5a69e",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/src/game/constants.js"
+    },
+    {
+      "path": "assets/upstream/simulator/app/src/game/game.js",
+      "bytes": 102556,
+      "sha256": "71ee74e2eef11ba172b2949462a591a6578a28291cee76cad72ff64cfdb0f563",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/src/game/game.js"
+    },
+    {
+      "path": "assets/upstream/simulator/app/src/game/ball-actor.js",
+      "bytes": 2929,
+      "sha256": "2bb94bd0544fe9a71ba84e822ceae2b5de4d4295e245a18da22a7adde490b3d3",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/src/game/ball-actor.js"
+    },
+    {
+      "path": "assets/upstream/simulator/app/src/game/variants.js",
+      "bytes": 15419,
+      "sha256": "b4d54c53b515912418a152e9efc8bb16d2fcb25f3ba0e4fac2b63b41b0dee335",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/src/game/variants.js"
+    },
+    {
+      "path": "assets/upstream/simulator/app/src/game/arena.js",
+      "bytes": 14232,
+      "sha256": "c87e60c8c7ee5448bc9c4df9f7984545201f0cad1ded1ef0eb4acb2a9896a537",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/src/game/arena.js"
+    },
+    {
+      "path": "assets/upstream/simulator/app/src/game/duck.js",
+      "bytes": 16555,
+      "sha256": "bfb6c5f3f5da74df626361ff874776de3366746b7e99d76cf5d5c642443de4ab",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/src/game/duck.js"
+    },
+    {
+      "path": "assets/upstream/simulator/app/src/game/controls/controller.js",
+      "bytes": 9084,
+      "sha256": "0e7375edc469f5bacc3e373b36750e1019043e9aeb45a15c3f7983125aaa874e",
+      "source": "https://huggingface.co/spaces/pollen-robotics/microduck-simulator/resolve/ad9d41a763f30dc770817c33d92dcfec0205db1e/app/src/game/controls/controller.js"
+    },
+    {
+      "path": "assets/upstream/microduck_rl/scripts/hf/train_hf.py",
+      "bytes": 426,
+      "sha256": "0db74a6edd3cc157a5596ac6f019496e8fdde936d9edcc3f260052297d7f1ae9",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck_rl/1e79c29c97d8b38aee9eefde77a545860ba7658e/scripts/hf/train_hf.py"
+    },
+    {
+      "path": "assets/upstream/microduck_rl/src/mjlab_microduck/train_cli.py",
+      "bytes": 1092,
+      "sha256": "ab210a1ee8eaf56ab8499eaf3b71b60f2d32935db7a041db621f3975ec7120aa",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck_rl/1e79c29c97d8b38aee9eefde77a545860ba7658e/src/mjlab_microduck/train_cli.py"
+    },
+    {
+      "path": "assets/upstream/microduck_rl/src/mjlab_microduck/tasks/microduck_standup_env_cfg.py",
+      "bytes": 58592,
+      "sha256": "b20b8f3fac5a374dd602f371f0b500955b4dbcb4d3f7330bddfa15b327826873",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck_rl/1e79c29c97d8b38aee9eefde77a545860ba7658e/src/mjlab_microduck/tasks/microduck_standup_env_cfg.py"
+    },
+    {
+      "path": "assets/upstream/microduck_rl/src/mjlab_microduck/tasks/__init__.py",
+      "bytes": 11310,
+      "sha256": "e811849d2cfcd0f9db6bab15aacb6641206ea219f4a99dc613d9e0e242dd1dab",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck_rl/1e79c29c97d8b38aee9eefde77a545860ba7658e/src/mjlab_microduck/tasks/__init__.py"
+    },
+    {
+      "path": "assets/upstream/microduck_rl/src/mjlab_microduck/tasks/microduck_ground_pick_env_cfg.py",
+      "bytes": 32917,
+      "sha256": "9b68951e2c84fdccb5894701efa97e060438eb56c956a34c65e844ba3fa6185e",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck_rl/1e79c29c97d8b38aee9eefde77a545860ba7658e/src/mjlab_microduck/tasks/microduck_ground_pick_env_cfg.py"
+    },
+    {
+      "path": "assets/upstream/microduck_rl/src/mjlab_microduck/tasks/microduck_ball_kick_env_cfg.py",
+      "bytes": 29653,
+      "sha256": "313180628c0d0364ea6d0f1843e7e3e10b76585491b90b0c1f0e301d9e5fd30c",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck_rl/1e79c29c97d8b38aee9eefde77a545860ba7658e/src/mjlab_microduck/tasks/microduck_ball_kick_env_cfg.py"
+    },
+    {
+      "path": "assets/upstream/microduck_rl/src/mjlab_microduck/tasks/microduck_velocity_env_cfg.py",
+      "bytes": 44971,
+      "sha256": "75a0430b814ac7495eb237ab806fbd4dd10309b9fd3027ac3eee3c2e3c5a944a",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck_rl/1e79c29c97d8b38aee9eefde77a545860ba7658e/src/mjlab_microduck/tasks/microduck_velocity_env_cfg.py"
+    },
+    {
+      "path": "assets/upstream/microduck_rl/src/mjlab_microduck/tasks/microduck_sitstand_env_cfg.py",
+      "bytes": 43897,
+      "sha256": "4cb26df53b53beea7e98f995a13dfe3de31c8c0f46b963818a6e337c4a256ac2",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck_rl/1e79c29c97d8b38aee9eefde77a545860ba7658e/src/mjlab_microduck/tasks/microduck_sitstand_env_cfg.py"
+    },
+    {
+      "path": "assets/upstream/microduck/README.md",
+      "bytes": 5137,
+      "sha256": "28b4c4c092b1a6cf09796290cdd0398210a14e17ea88a23ef262704c4e0d3678",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck/96b89d8613f06722c1d64ce75ab0d7124fed9d8f/README.md"
+    },
+    {
+      "path": "assets/upstream/microduck_rl/README.md",
+      "bytes": 9290,
+      "sha256": "cac2fb08c302f3b282d0f6acc4ca56f2a151be60becc20f08b84dc7913658259",
+      "source": "https://raw.githubusercontent.com/pollen-robotics/microduck_rl/1e79c29c97d8b38aee9eefde77a545860ba7658e/README.md"
+    }
+  ],
+  "microduckRevision": "96b89d8613f06722c1d64ce75ab0d7124fed9d8f",
+  "rlRevision": "1e79c29c97d8b38aee9eefde77a545860ba7658e",
+  "policyRepositoryRevision": "665ae4eb20bfe13bca1ef4ea6d4bb6b4a096e448",
+  "licensing": {
+    "software": "Apache-2.0",
+    "hardwareGeometry": "Upstream microduck_rl README explicitly says Creative Commons BY-SA-NC; separately required commercial authorization has not been supplied.",
+    "commercialGeometryAuthorization": "NOT_PROVIDED",
+    "policyCompatibilityNote": "Use Space sitstand policy SHA c6c40e35e726eabd803d633e090d112994f469921152448367953fbaf9799bc8; newer policy-repository alpha_sitstand.onnx differs."
+  }
+}

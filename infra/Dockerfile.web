@@ -1,0 +1,18 @@
+FROM node:22-alpine AS build
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts
+COPY apps/web ./apps/web
+COPY packages/game-core ./packages/game-core
+COPY packages/simulation-core ./packages/simulation-core
+COPY packages/solana/src/amounts.ts packages/solana/src/balance.ts ./packages/solana/src/
+COPY tsconfig.json ./
+ARG VITE_SOLANA_CLUSTER=devnet
+ARG VITE_SOLANA_RPC_URL=https://api.devnet.solana.com
+ARG VITE_QUACK_TOKEN_MINT=
+ARG VITE_QUACK_COSMETIC_THRESHOLD=100
+RUN npm run build
+FROM caddy:2-alpine
+COPY infra/Caddyfile /etc/caddy/Caddyfile
+COPY --from=build /app/dist/web /srv
+EXPOSE 8080

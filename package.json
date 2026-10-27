@@ -1,0 +1,42 @@
+{
+  "name": "ducklab",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "vite --config apps/web/vite.config.ts",
+    "build": "vite build --config apps/web/vite.config.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test packages/game-core/test/*.test.ts packages/solana/test/*.test.ts && node --test packages/simulation-core/test/*.test.mjs",
+    "test:game": "node --import tsx --test packages/game-core/test/*.test.ts packages/solana/test/*.test.ts",
+    "test:physics": "node --test packages/simulation-core/test/*.test.mjs",
+    "test:browser": "playwright test",
+    "preview": "vite preview --config apps/web/vite.config.ts --host 127.0.0.1"
+  },
+  "dependencies": {
+    "@fontsource-variable/dm-sans": "5.3.0",
+    "@fontsource/dm-mono": "5.3.0",
+    "@mujoco/mujoco": "3.11.0",
+    "@wallet-standard/app": "1.1.1",
+    "bs58": "6.0.0",
+    "lucide-react": "0.468.0",
+    "onnxruntime-web": "1.27.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "three": "0.164.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/node": "26.6.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@types/three": "0.164.1",
+    "@vitejs/plugin-react": "6.1.2",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vite": "8.3.5"
+  }
+}

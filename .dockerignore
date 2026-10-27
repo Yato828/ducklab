@@ -1,0 +1,10 @@
+node_modules
+archive
+.upstream
+.git
+.env
+.env.*
+tests
+assets
+docs
+dist

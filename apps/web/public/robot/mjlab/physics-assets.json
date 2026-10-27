@@ -1,0 +1,35 @@
+{
+  "meshFiles": [
+    "sole_left.stl",
+    "sole_right.stl",
+    "leg.stl",
+    "top_head_shell.stl",
+    "bottom_head_shell.stl",
+    "np_f970.stl",
+    "hip_l.stl",
+    "power_support.stl",
+    "jaw.stl"
+  ],
+  "jointNames": [
+    "left_hip_yaw",
+    "left_hip_roll",
+    "left_hip_pitch",
+    "left_knee",
+    "left_ankle",
+    "neck_pitch",
+    "head_pitch",
+    "head_yaw",
+    "head_roll",
+    "right_hip_yaw",
+    "right_hip_roll",
+    "right_hip_pitch",
+    "right_knee",
+    "right_ankle"
+  ],
+  "timestep": 0.005,
+  "decimation": 4,
+  "policyHz": 50,
+  "observationSize": 61,
+  "actionSize": 14,
+  "meshDir": "collision"
+}

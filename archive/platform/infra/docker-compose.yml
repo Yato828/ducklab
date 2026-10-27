@@ -1,0 +1,93 @@
+name: ducklab
+services:
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: ducklab
+      POSTGRES_USER: ducklab
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ducklab-local-only}
+    ports: ["127.0.0.1:5432:5432"]
+    volumes: ["postgres:/var/lib/postgresql"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ducklab -d ducklab"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  redis:
+    image: redis:8-alpine
+    command: ["redis-server","--appendonly","yes","--maxmemory","256mb","--maxmemory-policy","noeviction"]
+    ports: ["127.0.0.1:6379:6379"]
+    volumes: ["redis:/data"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  minio:
+    image: minio/minio:latest
+    command: ["server","/data","--console-address",":9001"]
+    environment:
+      MINIO_ROOT_USER: ${S3_ACCESS_KEY_ID:-ducklab-local}
+      MINIO_ROOT_PASSWORD: ${S3_SECRET_ACCESS_KEY:-ducklab-local-only}
+    ports: ["127.0.0.1:9000:9000","127.0.0.1:9001:9001"]
+    volumes: ["objects:/data"]
+  minio-init:
+    image: minio/mc:latest
+    depends_on: [minio]
+    environment:
+      MC_HOST_ducklab: http://${S3_ACCESS_KEY_ID:-ducklab-local}:${S3_SECRET_ACCESS_KEY:-ducklab-local-only}@minio:9000
+    entrypoint: ["/bin/sh","-c"]
+    command: ["until mc ready ducklab; do sleep 2; done; mc mb --ignore-existing ducklab/ducklab-private; mc anonymous set none ducklab/ducklab-private; mc mb --ignore-existing ducklab/ducklab-public; mc anonymous set download ducklab/ducklab-public"]
+  migrate:
+    build: {context: ., dockerfile: infra/Dockerfile.api}
+    env_file: {path: .env, required: false}
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://ducklab:${POSTGRES_PASSWORD:-ducklab-local-only}@postgres:5432/ducklab
+    command: ["node","--import","tsx","packages/database/migrate.ts"]
+    depends_on:
+      postgres: {condition: service_healthy}
+  api:
+    build: {context: ., dockerfile: infra/Dockerfile.api}
+    env_file: {path: .env, required: false}
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      API_HOST: 0.0.0.0
+      APP_ORIGIN: ${APP_ORIGIN:-http://localhost:8080}
+      DATABASE_URL: postgresql://ducklab:${POSTGRES_PASSWORD:-ducklab-local-only}@postgres:5432/ducklab
+      REDIS_URL: redis://redis:6379
+      S3_ENDPOINT: http://minio:9000
+      S3_PRIVATE_BUCKET: ducklab-private
+      S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:-ducklab-local}
+      S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:-ducklab-local-only}
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD","node","-e","fetch('http://127.0.0.1:3001/api/v1/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+  worker:
+    build: {context: ., dockerfile: infra/Dockerfile.api}
+    env_file: {path: .env, required: false}
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      APP_ORIGIN: ${APP_ORIGIN:-http://localhost:8080}
+      DATABASE_URL: postgresql://ducklab:${POSTGRES_PASSWORD:-ducklab-local-only}@postgres:5432/ducklab
+      REDIS_URL: redis://redis:6379
+    command: ["node","--import","tsx","apps/worker/src/index.ts"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+    restart: unless-stopped
+  web:
+    build: {context: ., dockerfile: infra/Dockerfile.web}
+    ports: ["${HTTP_BIND:-127.0.0.1}:8080:80"]
+    environment: {SITE_ADDRESS: ":80"}
+    depends_on:
+      api: {condition: service_healthy}
+volumes:
+  postgres:
+  redis:
+  objects:

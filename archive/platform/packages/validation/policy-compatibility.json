@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "upstreamCommit": "1e79c29c97d8b38aee9eefde77a545860ba7658e",
+  "simulatorCommit": "ad9d41a763f30dc770817c33d92dcfec0205db1e",
+  "modelSha256": "07af5e482200dfd2a7bf80ddde371153c88768a3a5aebc2f58ea42136fc7dadb",
+  "observationSize": 61,
+  "actionSize": 14,
+  "policyHz": 50,
+  "actionScale": 1.0,
+  "jointNames": [
+    "left_hip_yaw",
+    "left_hip_roll",
+    "left_hip_pitch",
+    "left_knee",
+    "left_ankle",
+    "neck_pitch",
+    "head_pitch",
+    "head_yaw",
+    "head_roll",
+    "right_hip_yaw",
+    "right_hip_roll",
+    "right_hip_pitch",
+    "right_knee",
+    "right_ankle"
+  ],
+  "defaultPose": [
+    0,
+    -0.08726646259971647,
+    -0.457924,
+    -0.00494,
+    0.452984,
+    0.3490658503988659,
+    0.3490658503988659,
+    0,
+    0,
+    0,
+    0.08726646259971647,
+    0.457924,
+    0.00494,
+    -0.452984
+  ],
+  "jointLimits": [
+    [
+      -0.4363323129985824,
+      0.5235987755982988
+    ],
+    [
+      -0.3839724354387525,
+      0.3839724354387525
+    ],
+    [
+      -1.570796326795005,
+      1.5707963267947882
+    ],
+    [
+      -1.570796326795012,
+      1.570796326794781
+    ],
+    [
+      -1.5707963267949019,
+      1.5707963267948912
+    ],
+    [
+      -1.5707963267948966,
+      1.0471975511965976
+    ],
+    [
+      -1.5707963267948974,
+      1.5707963267948957
+    ],
+    [
+      -2.967059728390373,
+      2.967059728390348
+    ],
+    [
+      -0.43633231299859127,
+      0.4363323129985735
+    ],
+    [
+      -0.5235987755982988,
+      0.4363323129985824
+    ],
+    [
+      -0.3839724354387525,
+      0.3839724354387525
+    ],
+    [
+      -1.5707963267949268,
+      1.5707963267948664
+    ],
+    [
+      -1.570796326794932,
+      1.570796326794861
+    ],
+    [
+      -1.5707963267949054,
+      1.5707963267948877
+    ]
+  ],
+  "actuatorTargetLimits": [
+    [
+      -10,
+      10
+    ],
+    [
+      -10,
+      10
+    ],
+    [
+      -10,
+      10
+    ],
+    [
+      -10,
+      10
+    ],
+    [
+      -10,
+      10
+    ],
+    [
+      -10,
+      10
+    ],
+    [
+      -10,
+      10
+    ],
+    [
+      -10,
+      10
+    ],
+    [
+      -10,
+      10
+    ],
+    [
+      -10,
+      10
+    ],
+    [
+      -10,
+      10
+    ],
+    [
+      -10,
+      10
+    ],
+    [
+      -10,
+      10
+    ],
+    [
+      -10,
+      10
+    ]
+  ],
+  "notes": "Position actuator targets preserve upstream semantics. Anatomical target excursions are reported for review; MuJoCo joint constraints limit actual positions. Offline validation alone never authorizes publication."
+}
