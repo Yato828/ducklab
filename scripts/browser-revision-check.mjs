@@ -1,0 +1,6 @@
+import {chromium} from '@playwright/test';import fs from 'node:fs/promises';
+const browser=await chromium.launch({channel:'chrome',headless:true,args:['--enable-unsafe-swiftshader']});
+try{const page=await browser.newPage({viewport:{width:1440,height:1050},deviceScaleFactor:1});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ for(const [route,name] of [['/','dark-home'],['/time-trial','dark-course'],['/token','dark-token'],['/leaderboard','dark-leaderboard']]){await page.goto('http://127.0.0.1:5173'+route);if(route==='/'||route==='/time-trial')await page.waitForSelector('.simulation-viewport[data-ready="true"]',{timeout:60000});await page.screenshot({path:'tests/artifacts/'+name+'.png',fullPage:true});console.log(route,await page.title(),await page.locator('h1').textContent());}
+ await page.setViewportSize({width:390,height:844});await page.goto('http://127.0.0.1:5173/time-trial');await page.waitForSelector('.simulation-viewport[data-ready="true"]',{timeout:60000});await page.screenshot({path:'tests/artifacts/dark-course-mobile.png',fullPage:true});console.log('overflow',await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),'errors',errors);if(errors.length)process.exitCode=1;
+}finally{await browser.close();}

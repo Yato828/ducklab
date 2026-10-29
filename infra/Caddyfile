@@ -1,5 +1,4 @@
 :8080 {
-  root * /srv
   encode zstd gzip
   header {
     Cross-Origin-Opener-Policy same-origin
@@ -7,7 +6,12 @@
     X-Content-Type-Options nosniff
     Referrer-Policy strict-origin-when-cross-origin
   }
-  @pages path / /playground /time-trial /customize /about /licenses /privacy /terms
-  rewrite @pages /index.html
-  file_server
+  handle /api/* {
+    reverse_proxy {$LEADERBOARD_UPSTREAM:leaderboard:8787}
+  }
+  handle {
+    root * /srv
+    try_files {path} /index.html
+    file_server
+  }
 }

@@ -6,8 +6,8 @@ import {TimeTrial} from '../../game-core/src/trial.js';
 import {GAMEPLAY_CONFIG} from '../../game-core/src/version.js';
 export const ACTIONS=['sit','stand','roll','kickL','kickR','groundpick','recover'];
 export class PhysicsEngine {
- constructor(mj,model,ort,ensurePolicy,{course=false,record=true}={}){
-  Object.assign(this,{mj,model,ort,ensurePolicy,course,record});this.data=new mj.MjData(model);this.trial=new TimeTrial();
+ constructor(mj,model,ort,ensurePolicy,{course=false,record=true,rollers=false}={}){
+  Object.assign(this,{mj,model,ort,ensurePolicy,course,record,rollers});if(course&&rollers)throw new Error('Rollers are only available in Free Playground.');this.data=new mj.MjData(model);this.trial=new TimeTrial();
   this.qa=JOINT_NAMES.map(n=>model.jnt(n).qposadr);this.va=JOINT_NAMES.map(n=>model.jnt(n).dofadr);this.gyro=model.sensor('imu_ang_vel').adr;this.trunk=model.body('trunk_base').id;this.key=mj.mj_name2id(model,mj.mjtObj.mjOBJ_KEY.value,'STAND');
   this.objects=Object.fromEntries(['ball','block','ramp'].map(k=>[k,{q:model.jnt('ducklab_'+k+'_free').qposadr,v:model.jnt('ducklab_'+k+'_free').dofadr,body:model.body('ducklab_'+k).id}]));
   this.locks=course?COURSE.locks.map(g=>({...g,id:g.id,mocap:model.body('lock_'+g.id).mocapid})):[];
@@ -19,11 +19,11 @@ export class PhysicsEngine {
  }
  start(){if(!this.course)throw new Error('Time Trial only.');this.reset();this.trial.start(0,Array.from(this.data.qpos.subarray(0,3)));}
  log(event){if(this.record&&this.course&&this.trial.status==='running'){if(this.events.length>=20000)throw new Error('Run input limit reached. Restart the run.');this.events.push({step:this.steps,...event});}}
- setCommand(vx,wz){if(!Number.isFinite(vx)||!Number.isFinite(wz))throw new Error('Invalid command.');vx=Math.round(Math.max(-.2,Math.min(.25,vx))*1000)/1000;wz=Math.round(Math.max(-1,Math.min(1,wz))*1000)/1000;if(vx!==this.vx||wz!==this.wz){this.log({type:'command',vx,wz});this.vx=vx;this.wz=wz;}}
+ setCommand(vx,wz){if(!Number.isFinite(vx)||!Number.isFinite(wz))throw new Error('Invalid command.');vx=Math.round(Math.max(this.rollers?-.5:-.2,Math.min(this.rollers?.6:.25,vx))*1000)/1000;const turnLimit=this.rollers?.3:1;wz=Math.round(Math.max(-turnLimit,Math.min(turnLimit,wz))*1000)/1000;if(vx!==this.vx||wz!==this.wz){this.log({type:'command',vx,wz});this.vx=vx;this.wz=wz;}}
  async action(action){
-  if(!ACTIONS.includes(action))throw new Error('Unsupported official action.');
+  if(this.rollers? action!=='crouch':!ACTIONS.includes(action))throw new Error('Unsupported official action.');
   if(this.course&&this.trial.status!=='running')throw new Error('Start the run first.');
-  if(['roll','kickL','kickR','groundpick','fallen','recover'].includes(this.mode))throw new Error('Wait for the active skill to finish.');
+  if(['roll','kickL','kickR','groundpick','fallen','recover','crouch'].includes(this.mode))throw new Error('Wait for the active skill to finish.');
   await this.ensurePolicy(action==='sit'||action==='stand'?'sitstand':action==='recover'?'stand':action);
   this.log({type:'action',action});
   if(action==='sit'||action==='stand'){this.mode='sitstand';this.sitTarget=action==='sit'?1:0;this.sitFlag=0;this.last.fill(0);}
@@ -41,8 +41,8 @@ export class PhysicsEngine {
   if(this.course&&this.steps>=45000)throw new Error('Run limit: 15 simulation minutes. Restart to try again.');
   const {data:d,model:m,mj}=this,activeMode=this.mode;
   if(this.mode!=='fallen'){
-   const command=new Float32Array(13);if(this.mode==='walk'){command[0]=this.vx;command[2]=this.wz;}if(this.mode==='sitstand')command[0]=this.sitFlag;if(this.mode==='groundpick'){const phase=this.modeSteps*CTRL_DT/4;command[0]=Math.cos(2*Math.PI*phase);command[1]=Math.sin(2*Math.PI*phase);}
-   const session=await this.ensurePolicy(this.mode==='recover'?'stand':this.mode);
+   const command=new Float32Array(13);if(this.mode==='walk'){command[0]=this.vx;command[2]=this.wz;}if(this.mode==='sitstand')command[0]=this.sitFlag;if(this.mode==='groundpick'||this.mode==='crouch'){const phase=this.modeSteps*CTRL_DT/(this.mode==='crouch'?5:4);command[0]=Math.cos(2*Math.PI*phase);command[1]=Math.sin(2*Math.PI*phase);}
+   const session=await this.ensurePolicy(this.mode==='recover'?'stand':this.rollers&&this.mode==='walk'?'drive':this.mode);
    const obs=buildObservation({gyro:d.sensordata.subarray(this.gyro,this.gyro+3),quaternion:d.body(this.trunk).xquat,positions:this.qa.map(a=>d.qpos[a]),velocities:this.va.map(a=>d.qvel[a]),lastAction:this.last,command},this.obs);
    const t=performance.now(),out=await session.run({[session.inputNames[0]]:new this.ort.Tensor('float32',obs,[1,61])});this.inferenceMs=performance.now()-t;const act=out[session.outputNames[0]].data;
    if(act.length!==14||!Array.from(act).every(Number.isFinite))throw new Error('Invalid policy output.');
@@ -54,11 +54,12 @@ export class PhysicsEngine {
   if(!Array.from(d.qpos).every(Number.isFinite))throw new Error('Non-finite physical state.');
   const gz=this.gravity()[2];
   if(this.course){const b=this.objects.block;this.trial.update(this.steps*CTRL_DT,Array.from(d.qpos.subarray(0,3)),{ball:Array.from(d.qpos.subarray(this.objects.ball.q,this.objects.ball.q+3)),block:Array.from(d.qpos.subarray(b.q,b.q+3)),blockSpeed:Math.hypot(...d.qvel.subarray(b.v,b.v+3)),robotSpeed:Math.hypot(...d.qvel.subarray(0,3)),gravityZ:gz,mode:activeMode,kickContact});for(const g of this.locks)this.data.mocap_pos[g.mocap*3+2]=this.trial.completed[g.id]?1.0:.19;}
-  if(this.mode==='walk'){this.fallSteps=gz>-.5?this.fallSteps+1:0;if(this.fallSteps>=10){this.mode='fallen';this.modeSteps=0;this.vx=0;this.wz=0;}}
+  if(this.mode==='walk'){this.fallSteps=gz>-.5?this.fallSteps+1:0;if(this.fallSteps>=10){if(this.rollers)throw new Error('Roller duck fell. Reset to skate again.');this.mode='fallen';this.modeSteps=0;this.vx=0;this.wz=0;}}
   else if(this.mode==='fallen'&&this.modeSteps>=15){this.mode='recover';this.modeSteps=0;this.uprightSteps=0;this.last.fill(0);}
   else if(this.mode==='recover'){this.uprightSteps=gz<-.85?this.uprightSteps+1:0;if(this.uprightSteps>=50){this.mode='walk';this.modeSteps=0;this.last.fill(0);}else if(this.modeSteps>=300)throw new Error('Recovery timed out. Use Rescue (+30s) or restart.');}
   else if(this.mode==='sitstand'){if(this.sitTarget&&this.modeSteps>=40)this.sitFlag=1;if(!this.sitTarget&&this.modeSteps>=100){this.mode='walk';this.modeSteps=0;this.last.fill(0);}}
   else if((this.mode==='kickL'||this.mode==='kickR')&&this.modeSteps>=25){this.mode='walk';this.modeSteps=0;}
+  else if(this.mode==='crouch'&&this.modeSteps>=175){this.mode='walk';this.modeSteps=0;}
   else if(this.mode==='groundpick'&&this.modeSteps>=140){this.mode='walk';this.modeSteps=0;}
   else if(this.mode==='roll'&&this.modeSteps>=150){this.mode=gz<-.85?'walk':'recover';this.modeSteps=0;this.last.fill(0);}
  }

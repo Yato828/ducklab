@@ -1,0 +1,3 @@
+const env=import.meta.env;
+function officialLink(value:unknown){try{const u=new URL(String(value));return u.protocol==='https:'&&!u.username&&!u.password?u.href:null;}catch{return null;}}
+export const project={name:(env.VITE_PROJECT_NAME||'DUCKLAB').slice(0,32),symbol:(env.VITE_QUACK_TOKEN_SYMBOL||'QUACK').replace(/^\$/,'').slice(0,12),links:[['X',officialLink(env.VITE_OFFICIAL_X_URL)],['Telegram',officialLink(env.VITE_OFFICIAL_TELEGRAM_URL)],['Pump.fun',officialLink(env.VITE_OFFICIAL_PUMPFUN_URL)],['Dexscreener',officialLink(env.VITE_OFFICIAL_DEXSCREENER_URL)]] as Array<[string,string|null]>};

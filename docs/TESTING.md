@@ -1,69 +1,68 @@
-# Executed validation
+# Executed validation — six-stage revision
 
-> **Historical results for the previous five-gate release.** They do not describe the current WIP. See [SESSION_HANDOFF.md](SESSION_HANDOFF.md) for the new six-stage headless pass (190.30 s), current typecheck failures, outdated test failures and remaining browser/replay verification.
+Validated locally through **2026-10-29 (Europe/Minsk)**. These results supersede the old five-gate light-theme acceptance report. The pinned gameplay ID is exported by `packages/game-core/src/version.js`.
 
-Executed locally on 2026-10-27. Results describe the revised static game, not archived platform work.
-
-| Check | Result |
+| Check | Actual result |
 |---|---|
 | `npm run typecheck` | Passed |
-| `npm test` | 36 tests passed: 17 game/token arithmetic and RPC validation, 19 genuine physics/geometry/course checks |
-| `npm run build` | Passed; static output `dist/web` |
-| `npm run test:browser` | 3 Playwright acceptance scenarios passed in desktop Chrome, including mobile-sized viewports |
-| `node scripts/fetch-upstream.mjs` | Verified all 87 pinned originals; no restoration required |
-| Isolated production wallet check | Passed bundled WASM/real walking, isolation headers, Wallet Standard connection, token threshold unlock/relock, wrong-mint rejection and disconnect |
+| `npm test` | 40 passed: 19 game/input/token checks and 21 real physics/geometry/replay checks |
+| `npm run test:browser` | 4 Playwright scenarios passed, 33.8 s on the final run |
+| `node scripts/browser-course-replay.mjs --submit` | Full browser course, authoritative replay, result UI, PNG export, PB reload, API submission and verified ranking passed |
+| `TEST_DATABASE_URL=… npm run test:leaderboard` | 2 passed with real PostgreSQL, not an in-memory database |
+| Production wallet/token check | Bundled WASM, walking, Wallet Standard fixtures, exact threshold unlock/relock, wrong-mint rejection, disconnect, contract copy and missing-link states passed |
+| `npm run build` | Passed, including automatic gameplay content-hash verification |
+| `node scripts/fetch-upstream.mjs` | All 87 original source/asset hashes verified; restored 0 |
 
-## Browser acceptance scenarios actually executed
+## Physical gameplay evidence
 
-1. Original geometry renders in one WebGL canvas; keyboard walking changes physical position; pause freezes simulation time; reset returns the robot; a physical ball can be added; sit-to-stand returns the controller to walking. No page JavaScript errors.
-2. Start a course from 00:00.00, drive using keyboard input through all five actual gates, cross finish, freeze the timer, persist local personal best, export the result PNG, try again, restart to zero, reload the browser, recover the saved best and verify pause. The captured browser run finished in **41.70 simulation seconds**; input timing can change this value on subsequent runs.
-3. Mobile layouts at 390 × 844 have no horizontal page overflow; free Graphite cosmetic and render quality persist after reload; unconfigured token colors remain locked; the wallet dialog handles no installed extension; the course HUD is visible.
+The real MuJoCo/official ONNX controller completed all six mandatory stages without assistance in **190.30 simulation seconds (03:10.30)**. The reference path includes slalom navigation, a ball struck during the original left-kick policy into the goal, a physically pushed and stabilized cube, seated pose validation, a measured roll/upright landing, corridor/turn/final gate.
 
-The separate headless physics reference run completes the course in 38.82 simulation seconds. It sends only supported controller velocities; it never moves the rendered model or writes robot qpos after initialization. The ordered checkpoint trace is `tests/artifacts/course-physics.json`.
+The full reference controller only sends velocities and official actions. It never sets robot/prop positions after initialization. Same-runtime replay reproduces every final qpos exactly. Chrome's browser worker completed the same 9,515 control ticks; the server replay of its recorded inputs returned 190,300 ms with **zero measured root-position difference**. The accepted test threshold is 1e-6 m; finish time remains the authoritative server tick, with no client time tolerance.
 
-The first browser pass exposed a real start/held-key race and a missing accessible label on the mobile wallet icon. Both were corrected, and the complete suite passed afterward.
+The browser harness uses test-only interception of the served component to obtain its existing public simulation API. It feeds the bounded input log and single-steps actual physics through the normal worker. It does not replace state, policies, objectives, contacts or timer values. Separate Playwright tests exercise real-time keyboard input and pause/resume. This is automated reference evidence, not a measured first-time-human benchmark.
 
-## Test artifacts
+`tests/artifacts/chaos-course.json` contains input log, trace, final qpos and splits. `tests/artifacts/browser-replay.json` contains browser diagnostics and authoritative result.
 
-- `tests/artifacts/home-desktop.png`, `home-mobile.png`
-- `tests/artifacts/course-ready.png`, `course-mobile.png`, `course-result.png`
-- `tests/artifacts/customize-mobile.png`
-- `tests/artifacts/shared-result.png` — actual exported result artwork
-- `tests/artifacts/wallet-colors-configured.png` — explicitly isolated wallet/RPC fixture
-- `tests/artifacts/course-physics.json` — physical course trace
+## Browser acceptance
 
-## Repeat locally
+1. Dark homepage, one original robot canvas, keyboard walking, both Q/E kicks, R sit/stand, pause freezing the clock, prop creation and reset.
+2. Course starts at zero, pause is stable, Rescue adds +30 seconds, restart resets time/progress/penalties and returns to ready state.
+3. Mobile 390 × 844 and tablet 820 × 1180 layouts, navigation, saved free cosmetic/quality, locked unconfigured token colors, no-extension wallet state, token COMING SOON and readable course HUD without horizontal overflow.
+4. Original roller model loads only in Free Playground; real drive translates, C runs crouch glide, and switching back resets the unranked playground.
+5. Separate full browser course: all stages, result screen, local PB persistence, PNG download, submission through the actual form, server verification and verified world-best/rank display in the isolated test database. No QA score was seeded or hardcoded; it was computed from the replay. Test rows are removed after validation.
+
+Testing caught and fixed a real first-action-after-Resume race: the action shortcut now checks the simulator's immediate pause state instead of waiting for React telemetry to update.
+
+## Backend/abuse checks
+
+Real PostgreSQL tests cover empty world best, rejection of client time/flags and mismatched versions, forbidden origins, request size bounds, duplicate logs, persistent per-address quotas, uncompleted replay rejection, isolated verifier timeout, queue cap under concurrent submission, successful official time, and persistence after service restart. Only verified records enter the leaderboard. Tests use a dedicated database whose name ends in `test`; they refuse to clear another database.
+
+## Token verification boundaries
+
+The configured production test uses an explicitly named Wallet Standard fixture, controlled RPC responses, and wrapped SOL as a test-only mint. It is not an actual QUACK launch or installed Phantom/Solflare/Backpack extension session. It verifies application integration, zero signing/transaction requests, exact integer threshold logic, failure handling, and clipboard behavior. No fixture is imported by the production app. Main configuration remains empty until real details are supplied.
+
+## Reproduce
 
 ```sh
 npm ci
 npm run dev
-# In a second terminal:
+# Additional terminal(s):
 npm run typecheck
 npm test
 npm run test:browser
+npm run test:browser:course
+TEST_DATABASE_URL=postgresql://localhost/ducklab_test npm run test:leaderboard
 npm run build
 ```
 
-The Playwright configuration uses installed Google Chrome (`channel: chrome`). If Chrome is unavailable, install an appropriate Playwright Chromium and change the test channel to match. No browser download was needed in this environment. `DUCKLAB_TEST_URL` can target another local server.
+For the full form submission check, run the API against a dedicated test database on port 8787, then `node scripts/browser-course-replay.mjs --submit`. Remove the test database's QA rows afterward. The ordinary local/production database starts empty.
 
-## Configured-wallet production test
+For wallet fixtures, build a separate directory with `VITE_QUACK_TOKEN_MINT=So11111111111111111111111111111111111111112 VITE_SOLANA_RPC_URL=https://rpc.ducklab.test VITE_QUACK_COSMETIC_THRESHOLD=100 npm run build -- --outDir /private/tmp/ducklab-wallet-fixture`, serve it with `npm run preview -- --outDir /private/tmp/ducklab-wallet-fixture --port 4174`, then run `node scripts/browser-wallet-check.mjs`.
 
-This deliberately builds into a separate directory. The main game remains unconfigured by default.
+## Remaining external checks
 
-```sh
-VITE_QUACK_TOKEN_MINT=So11111111111111111111111111111111111111112 \
-VITE_QUACK_COSMETIC_THRESHOLD=100 \
-VITE_SOLANA_RPC_URL=https://rpc.ducklab.test \
-npm run build -- --outDir /private/tmp/ducklab-wallet-fixture
-npm run preview -- --outDir /private/tmp/ducklab-wallet-fixture --port 4174
-# Second terminal:
-node scripts/browser-wallet-check.mjs
-```
+No production host, actual token mint/community links or commercial geometry authorization was provided. Live wallet-extension compatibility on the final HTTPS host, physical mobile devices, Safari/Firefox and human balancing are not claimed as tested. Docker/Vercel publication was not executed. Container configuration is supplied, not presented as a successful deployment.
 
-The wrapped-SOL address here is a **test configuration**, not a QUACK production mint. The test injects a named Wallet Standard fixture and controlled RPC responses; it proves application wiring and adversarial response handling, not an actual Phantom/Solflare/Backpack extension session or live QUACK holdings. It verifies no signature/transaction methods are invoked. The fixture files are not part of the app build.
+The build has the expected large Three.js chunk warning and MuJoCo Node-only `module` externalization notice. Bundled browser WASM has been exercised successfully. No funds were moved.
 
-## Remaining verification boundaries
-
-No real QUACK mint was supplied. Actual wallet extensions and a live configured token should be manually checked on the final HTTPS host. Docker and Vercel publication were not executed. No funds were moved. Commercial model authorization has not been supplied. Mobile-sized Chrome was tested; physical phones, Safari and Firefox were not tested.
-
-The build reports an expected large Three.js chunk and MuJoCo's Node-only `module` branch externalization. The actual production WASM/worker path was tested successfully; these are not compile failures. Performance values shown in the UI are measured on the current device rather than copied from these tests.
+Current dark screenshots use `tests/artifacts/dark-*.png`; configured token screenshots explicitly use fixtures. Older screenshots without that prefix and `course-physics.json` document the superseded light/five-gate version.

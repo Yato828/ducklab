@@ -1,26 +1,15 @@
-# Simulation accuracy and course validation
+# Simulation fidelity and measured gameplay
 
-The original Microduck GLB/kinematics render the robot. The 14 servo hinges are driven by MuJoCo state, not animation clips. Geometry tests verify every referenced mesh, hierarchy, joint range and standing scale: the imported standing bounding box is approximately 0.12269 × 0.27450 × 0.14364 metres (Three.js Y-up).
+The robot remains the original Microduck GLB and kinematic hierarchy, with the original MJCF inertias, limits and 14 actuators. Original source files are pinned in `assets/microduck/manifest.json`; all 87 hashes are regression-tested. Browser collision meshes follow the official GLB-to-binary-STL conversion. No prerecorded animation or renderer motion drives gameplay.
 
-The worker uses the original all-collisions MJCF with 5 ms fixed steps and four steps per policy update. The 61-dimensional observation is gyro 3, projected gravity 3, joint offset 14, joint velocity 14, previous action 14, and command 13. Policy output contains 14 actuator offsets. Gravity projection uses the inverse trunk quaternion. Actuator ranges and finite values are checked before motor targets are applied.
+MuJoCo 3.11.0 runs four 5 ms substeps per control tick. ONNX Runtime Web 1.27.0 uses a single-threaded WASM execution provider, with the original 61-value observation and fourteen joint outputs. Node replay uses the same engines. Walk/recovery load at boot; other policies load on first use. Render FPS does not enter simulation time.
 
-Physics and inference run in a dedicated worker. Rendering uses transferable state buffers and never advances physics. A slow device can progress simulation time more slowly than wall time; the stopwatch follows simulation ticks. Visibility changes pause the game. State mutations (reset, pause, action and start) execute at control-step boundaries, preventing an old asynchronous inference from corrupting a reset.
+The official controller has asymmetric behavior: forward motion and left turns track well in the tested setup; right turns are useful while walking, while reverse and right turns from rest can hesitate. These limitations are retained and explained in the controls guide. Sit/stand, both kicks, forward roll, ground pick, automatic recovery and the separate official roller drive/crouch variant are physically exercised by tests.
 
-Walking and recovery policies load at boot. Sitting, rolling, kicks and ground-pick load on first use. The original free-body ball, block and wedge use real contacts. The Time Trial's fixed layout uses the same geometry records for collision and rendering, including gates, slalom pylons and corridor walls. Restart restores all props and robot state.
+The current `chaos-lab-v2` reference run completes all six mandatory stages and the finish in **190.30 simulation seconds** without assistance. It only sends supported velocity commands and actions. It does not write robot, ball or cube positions after initialization. Splits: 26.14, 73.68, 103.56, 124.98, 142.74, 183.20 seconds. The ball is actually struck by a kicking robot contact; the cube is actually pushed; sitting and roll are checked from physical state.
 
-## Executed evidence
+The reference controller is automated, so 190.30 seconds is not a measured first-time human benchmark. The 2–4 minute first-player target remains a design goal; human playtesting is still useful for balancing. The same input log reproduced exact final qpos in Node and zero final root-position difference between the tested Chrome and Node runtimes. Cross-platform tolerances and honest rejection behavior are described in LEADERBOARD.md.
 
-The headless physical course test drives only velocity commands through ONNX/MuJoCo, never writes the robot's pose after reset, and passes all five ordered gates plus the finish. The deterministic reference run completed in **38.82 simulation seconds**, with checkpoint splits **5.00, 12.14, 18.02, 30.76, 35.22**. This is a test run, not a world record or gameplay statistic. The full trace is saved at `tests/artifacts/course-physics.json`.
+Assisted resets are the only in-run position resets. They are explicit UI actions, visible penalties and recorded replay events. Resetting the whole course restores all physics state, objects, gates and progression. A seated objective also requires the actual sit/stand controller; pressing R alone is insufficient. A roll requires a measured tilt inside the zone followed by an upright hold.
 
-Physics tests also cover standing/floor contact, forward walking, positive turning, clockwise steering while walking, sit-to-stand, rolling and returning upright, two fallen orientations recovering, both kicks, ground pick, ball-floor collision, and deterministic reset. Browser test results are listed separately in `TESTING.md`; a headless engine test alone is not a browser acceptance result.
-
-## Controller limits retained honestly
-
-- Forward command +0.25 m/s moves about 0.50 m in 5 s and 1.06 m in 10 s under this nominal model.
-- Positive yaw command +1 rad/s produces about +1.87 radians in 5 s.
-- Negative yaw with forward +0.25 creates a genuine clockwise arc. Negative yaw from rest can stall after a small initial turn.
-- Reverse -0.2 from rest and lower forward commands can produce very weak translation. The UI instructs users to steer while walking; reverse is not advertised as a reliable navigation strategy.
-- Ground pick is a physical motion, not guaranteed grasping of an arbitrary object.
-- Recovery can fail in awkward contacts. The worker pauses after its recovery timeout with an actionable reset message.
-
-The course was designed around these verified capabilities, with no jumps, flight, mesh animation or teleportation. Actual robot hardware differs through friction, actuator dynamics, sensor errors and manufacturing tolerances. Original assets do not establish mathematically perfect sim-to-real equivalence.
+This is a browser simulation, not a claim of perfect equivalence to physical robot hardware. No fictitious abilities, jumps or competitive physics boosts are added.

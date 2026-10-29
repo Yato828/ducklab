@@ -1,11 +1,13 @@
-# Static game architecture
+# Architecture
 
-React/Vite owns three experiences: Free Playground (also the homepage), Time Trial, and Customize. A single `SimulationViewport` is mounted per route. Customize loads only the original rig/standing pose; gameplay additionally starts a dedicated physics worker.
+React/Vite supplies the homepage, free playground, six-stage time trial, customization, token details and verified leaderboard. Three.js renders the original joint hierarchy; cosmetic changes affect materials only. Wallet Standard and finalized SPL RPC reads are independent of gameplay.
 
-`packages/simulation-core/src/physics.worker.js` owns MuJoCo data, the fixed timestep, ONNX sessions, controller actions, recovery, physical objects and Time Trial state. Operations that mutate/reset physics are queued between inference steps. Rendering never changes robot qpos. The renderer receives transferable state arrays and applies original joint transforms to the original rig. The course's shared geometry feeds both the MJCF augmentation and Three.js environment meshes.
+`packages/game-core/src/course.js` defines physical boundaries, puzzle dimensions, checkpoints, exits and assistance penalties. MuJoCo XML and Three.js geometry consume this shared definition. `TimeTrial` evaluates actual root/ball/cube state, controller mode, kick contact, pose and stability on fixed control ticks. It rejects skipped/ordered objectives and measures simulation time plus assistance penalties.
 
-`packages/game-core/src/trial.js` detects positive-direction segment crossings for only the next expected gate, then the finish. The elapsed time is derived from simulation time, independent of display FPS. Paused workers produce no new simulation ticks. The browser saves a completed best by course version. Change the course ID when geometry, robot dynamics or policies change enough to invalidate comparisons.
+`PhysicsEngine` owns MuJoCo data, original policy observations/inference, mode switching, recovery, resets, gate state and input logging. Browser worker scheduling and rendering never determine physics dt. The worker applies every input between ticks. The Node headless runtime loads the same WASM/policy bytes; authoritative replay does not trust browser positions, elapsed time or flags.
 
-Cosmetics change only visual materials. Wallet Standard connection is optional. `packages/solana/src/balance.ts` performs finalized read-only RPC calls, validates the configured mint and token accounts, and compares bigint base units against a decimal-aware threshold. No account authentication, backend entitlement, token transfer, staking or financial contract exists in the active app. Client-side cosmetic gating is a convenience, not DRM or an authoritative competitive permission system.
+Only completed runs may be submitted. The small Node HTTP API bounds requests, persists jobs and quotas in PostgreSQL, and starts isolated verification children. A shared database advisory lock limits global verification concurrency. Only independently finished replays become verified records. Content-hashed configuration IDs prevent comparing different physics versions.
 
-Original software, assets, licenses and hashes are retained. Prior platform work is in `archive/platform` with no runtime imports or build routes. The game is hosted as static files with WASM-compatible MIME types and isolation headers.
+The renderer, worker and policies load lazily; the homepage uses one simulation. Official roller physics/kinematics are a separate Free Playground variant that resets on switching. Mandatory stages always use the normal legged robot. Render quality, UI settings and token cosmetics cannot enter the ranked physics log.
+
+Public hosting is optional and not provisioned here. See DEPLOYMENT.md, LEADERBOARD.md, SECURITY.md and TESTING.md for operation, guarantees and measured limits. Archived marketplace/training services are not dependencies.

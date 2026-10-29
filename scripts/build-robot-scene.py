@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Generate DUCKLAB environment around unchanged official robot dynamics."""
-import pathlib, json, xml.etree.ElementTree as ET
+import pathlib, json, sys, xml.etree.ElementTree as ET
+suffix="_rollers" if "--rollers" in sys.argv else ""
 root_dir=pathlib.Path(__file__).resolve().parents[1]
 path=root_dir/'apps/web/public/robot/mjlab'
-tree=ET.parse(path/'robot_allcollisions.xml');root=tree.getroot()
+tree=ET.parse(path/f'robot_allcollisions{suffix}.xml');root=tree.getroot()
 # These geoms are visual only (contype=conaffinity=0), inertias are explicit.
 for parent in root.iter():
  for child in list(parent):
@@ -30,7 +31,7 @@ pose=[0,-0.08726646259971647,-0.457924,-0.004940,0.452984,0.3490658503988659,0.3
 pose_by=dict(zip(names,pose));q=[0,0,.12,1,0,0,0]+[pose_by.get(j.get('name'),0) for j in root.findall('.//body/joint')]
 for i in range(3):q.extend([10+i*2,0,.1,1,0,0,0])
 kf=ET.SubElement(root,'keyframe');ET.SubElement(kf,'key',name='STAND',qpos=' '.join(map(str,q)),ctrl=' '.join(map(str,pose)))
-tree.write(path/'scene_ducklab.xml',encoding='utf-8',xml_declaration=True)
+tree.write(path/f'scene_ducklab{suffix}.xml',encoding='utf-8',xml_declaration=True)
 mesh_files=[m.get('file') for m in asset.findall('mesh') if m.get('file')]
-(path/'physics-assets.json').write_text(json.dumps(dict(meshFiles=mesh_files,jointNames=names,timestep=.005,decimation=4,policyHz=50,observationSize=61,actionSize=14),indent=2))
+(path/f'physics-assets{suffix}.json').write_text(json.dumps(dict(meshFiles=mesh_files,jointNames=names,timestep=.005,decimation=4,policyHz=50,observationSize=61,actionSize=14),indent=2))
 print('Generated scene;',len(mesh_files),'original collision meshes;',len(names),'actuators;',len(q),'qpos values')

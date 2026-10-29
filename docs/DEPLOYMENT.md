@@ -1,49 +1,21 @@
-# Static deployment
+# Deployment
 
-## Local production build
+Free gameplay, local records, token cosmetics and graphics run in the browser. The verified global leaderboard adds one small Node service and PostgreSQL. No GPU, Redis, training service or onchain program is required.
 
-```sh
-npm ci
-npm run typecheck
-npm test
-npm run build
-npm run preview
-```
+## Local development
 
-Output: `dist/web`. The game has no API, database, authentication service, worker server or GPU service. Physics workers are browser Web Workers bundled by Vite.
+`npm ci`, `npm run dev`. The frontend listens on 127.0.0.1:5173. For records, set server-only DATABASE_URL and run `npm run dev:leaderboard`; Vite forwards `/api` to port 8787. Without the API, the game still works, WORLD BEST stays empty and submission reports the unavailable service.
 
-## Vercel
+## Static frontend
 
-Import this repository with project root at the repository root. Use `npm run build` and output `dist/web`; the included `vercel.json` supplies static route rewrites and browser isolation headers. Set optional public `VITE_` variables before building, then rebuild after configuration changes. Leave the mint blank to disable only gated colors.
+`npm run build` outputs `dist/web`. Vercel/static-host route fallback and COOP/COEP headers are included. Serve WASM/assets from the same origin. Do not cache index.html as immutable; Vite-hashed assets may be cached. The optional `VITE_LEADERBOARD_API_URL` must be configured at build time when the API is on a separate host. The Node verifier is not a Vercel edge function; it needs persistent process execution and PostgreSQL.
 
-Do not deploy archived platform code. Do not deploy a commercial game with restricted geometry until the owner has appropriate asset authorization (`UPSTREAM_SOURCES.md`). No deployment has been performed by this implementation session.
+## Container deployment
 
-## Other static hosts
+`infra/docker-compose.yml` provides web/Caddy, the Node verifier and PostgreSQL with a persistent volume. Set POSTGRES_PASSWORD, RATE_LIMIT_SECRET and ALLOWED_ORIGINS using private deployment configuration. Optional public token/project settings are build arguments. Run `docker compose -f infra/docker-compose.yml up --build -d` on your selected host. Place HTTPS ingress in front of port 8080. No database port is exposed.
 
-Serve `.wasm` as `application/wasm`, `.js` as JavaScript, and JSON/GLB/ONNX files as binary or their appropriate media types. Return original files for `/assets`, `/robot`, `/policies`; do not rewrite missing binary assets to HTML. Rewrite only application routes to `index.html`.
+The verifier container has 1 CPU, a 768 MB memory limit and a process limit. Replay children additionally have a 256 MB JavaScript heap bound and 25-second wall timeout. Caddy proxies `/api`, and the frontend/API share one origin. Back up the PostgreSQL volume; never use `down -v` as a routine restart.
 
-Required response headers:
+Both frontend and API must deploy the same generated configId. API startup checks source/asset hash drift and refuses to start on a mismatch. Re-run physical/replay tests before pinning a changed configuration. Old versions remain in the database but cannot become the current course's world best.
 
-```
-Cross-Origin-Opener-Policy: same-origin
-Cross-Origin-Embedder-Policy: require-corp
-X-Content-Type-Options: nosniff
-Referrer-Policy: strict-origin-when-cross-origin
-```
-
-The build includes `_headers` and `_redirects` for hosts that support them. Vercel uses `vercel.json`. Use HTTPS outside local development. Serve hashed `/assets` files with a long immutable cache, but revalidate HTML and non-hashed `/robot` and `/policies` files when releasing changed upstream assets. Asset compression reduces initial WASM transfer size substantially.
-
-If adding a Content Security Policy, allow same-origin scripts, workers, fonts, models and WASM (`wasm-unsafe-eval`), blob URLs for image exports, and the configured HTTPS Solana RPC endpoint under `connect-src`. No external font CDN is required.
-
-## Optional single-container static host
-
-```sh
-docker build -f infra/Dockerfile.web -t ducklab .
-docker run --rm -p 8080:8080 ducklab
-```
-
-Use build arguments to supply public `VITE_` token settings if needed. The container serves files through Caddy; it does not run a Node API. Docker execution has not been verified in this environment; the same static build is verified locally.
-
-## Release checks
-
-Run the physical course test, browser full-run/restart test, and responsive screenshots. Verify the actual hosting response headers, static route reloads, correct WASM MIME type, and wallet extension compatibility on HTTPS. Verify token configuration against the intended cluster/mint without requesting transfers. Retain source attribution and asset hashes. Local personal records are not authoritative competition data.
+No public hosting or production database has been provisioned by this task. Container configuration is supplied separately from locally executed browser/Node/PostgreSQL validation; see TESTING.md for exact checks. Resolve the documented commercial geometry rights before commercial publication.

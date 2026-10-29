@@ -1,0 +1,52 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: ducklab
+      POSTGRES_USER: ducklab
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+    volumes:
+      - ducklab_db:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ducklab -d ducklab"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+    restart: unless-stopped
+  leaderboard:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.leaderboard
+    environment:
+      DATABASE_URL: postgresql://ducklab:${POSTGRES_PASSWORD}@postgres:5432/ducklab
+      RATE_LIMIT_SECRET: ${RATE_LIMIT_SECRET:?Set a random private RATE_LIMIT_SECRET}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:8080}
+      TRUST_PROXY: "1"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    mem_limit: 768m
+    cpus: 1.0
+    pids_limit: 96
+    init: true
+    restart: unless-stopped
+  web:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.web
+      args:
+        VITE_PROJECT_NAME: ${VITE_PROJECT_NAME:-DUCKLAB}
+        VITE_QUACK_TOKEN_SYMBOL: ${VITE_QUACK_TOKEN_SYMBOL:-QUACK}
+        VITE_QUACK_TOKEN_MINT: ${VITE_QUACK_TOKEN_MINT:-}
+        VITE_SOLANA_CLUSTER: ${VITE_SOLANA_CLUSTER:-devnet}
+        VITE_SOLANA_RPC_URL: ${VITE_SOLANA_RPC_URL:-https://api.devnet.solana.com}
+        VITE_QUACK_COSMETIC_THRESHOLD: ${VITE_QUACK_COSMETIC_THRESHOLD:-100}
+        VITE_OFFICIAL_X_URL: ${VITE_OFFICIAL_X_URL:-}
+        VITE_OFFICIAL_TELEGRAM_URL: ${VITE_OFFICIAL_TELEGRAM_URL:-}
+        VITE_OFFICIAL_PUMPFUN_URL: ${VITE_OFFICIAL_PUMPFUN_URL:-}
+        VITE_OFFICIAL_DEXSCREENER_URL: ${VITE_OFFICIAL_DEXSCREENER_URL:-}
+    ports: ["8080:8080"]
+    depends_on: [leaderboard]
+    restart: unless-stopped
+volumes:
+  ducklab_db:

@@ -10,7 +10,7 @@ export async function createSimulation(container, options={}) {
   let disposed=false, worker, raf, rig, follow=options.mode!=='course', state=initialDiagnostics(),nextId=1;
   const pending=new Map(), total=options.preview?3:16;let completed=0;
   const progress=label=>{options.onProgress?.({completed:++completed,total,label});};
-  const scene=new THREE.Scene();scene.background=new THREE.Color(0xf1f1eb);scene.fog=new THREE.Fog(0xf1f1eb,options.mode==='course'?8:3,options.mode==='course'?25:9);
+  const scene=new THREE.Scene();scene.background=new THREE.Color(0x121212);scene.fog=new THREE.Fog(0x121212,options.mode==='course'?12:3,options.mode==='course'?25:9);
   const camera=new THREE.PerspectiveCamera(34,1,.005,30);
   const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true,powerPreference:'high-performance'});
   renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;
@@ -18,31 +18,31 @@ export async function createSimulation(container, options={}) {
   renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
   renderer.domElement.setAttribute('aria-label','Interactive original Microduck 3D robot');renderer.domElement.style.cssText='width:100%;height:100%;display:block;touch-action:none';container.appendChild(renderer.domElement);
   const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.08;controls.minDistance=.25;controls.maxDistance=4;controls.maxPolarAngle=Math.PI/2-.025;
-  scene.add(new THREE.HemisphereLight(0xffffff,0xc5c0ae,2.4));
+  scene.add(new THREE.HemisphereLight(0xffffff,0x363944,2.4));
   const key=new THREE.DirectionalLight(0xfffbef,3.5);key.position.set(.6,1.5,.8);key.castShadow=true;
   key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-1;key.shadow.camera.right=1;key.shadow.camera.top=1;key.shadow.camera.bottom=-1;key.shadow.camera.near=.01;key.shadow.camera.far=5;key.shadow.bias=-.00025;key.shadow.normalBias=.001;scene.add(key);scene.add(key.target);
   const fill=new THREE.DirectionalLight(0xffffff,1.8);fill.position.set(-1,.5,-.8);scene.add(fill);
-  const floor=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:0xecece5,roughness:.95}));floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
-  const grid=new THREE.GridHelper(20,200,0xd4d7ce,0xdfe1d8);grid.position.y=.0005;grid.material.transparent=true;grid.material.opacity=.55;scene.add(grid);
-  const ring=new THREE.Mesh(new THREE.RingGeometry(.34,.341,128),new THREE.MeshBasicMaterial({color:0xc8cbbf,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;ring.position.y=.0008;scene.add(ring);
-  const origin=new THREE.Mesh(new THREE.CircleGeometry(.006,16),new THREE.MeshBasicMaterial({color:0xb9bead}));origin.rotation.x=-Math.PI/2;origin.position.y=.001;scene.add(origin);
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:0x202020,roughness:.95}));floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
+  const grid=new THREE.GridHelper(20,200,0x3d3d35,0x2c2c2c);grid.position.y=.0005;grid.material.transparent=true;grid.material.opacity=.55;scene.add(grid);
+  const ring=new THREE.Mesh(new THREE.RingGeometry(.34,.341,128),new THREE.MeshBasicMaterial({color:0x565343,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;ring.position.y=.0008;scene.add(ring);
+  const origin=new THREE.Mesh(new THREE.CircleGeometry(.006,16),new THREE.MeshBasicMaterial({color:0x777156}));origin.rotation.x=-Math.PI/2;origin.position.y=.001;scene.add(origin);
   const course=options.mode==='course'?buildCourse(scene):null;if(course){ring.visible=false;origin.visible=false;}
   const ball=new THREE.Mesh(new THREE.SphereGeometry(.04,32,24),new THREE.MeshStandardMaterial({color:0xf2ce60,roughness:.55}));ball.castShadow=true;
-  const block=new THREE.Mesh(new THREE.BoxGeometry(.09,.09,.09),new THREE.MeshStandardMaterial({color:0x8dada1,roughness:.7}));block.castShadow=true;
+  const block=new THREE.Mesh(new THREE.BoxGeometry(.09,.09,.09),new THREE.MeshStandardMaterial({color:0xf5d65b,roughness:.7}));block.castShadow=true;
   // Same convex wedge vertex positions as scene_ducklab.xml, converted from MJCF +Z-up.
   const rv=[-.16,-.12,0,.16,-.12,0,.16,.12,0,-.16,.12,0,.16,-.12,.08,.16,.12,.08],rp=[];
   for(let i=0;i<rv.length;i+=3)rp.push(rv[i],rv[i+2],-rv[i+1]);
   const rg=new THREE.BufferGeometry();rg.setAttribute('position',new THREE.Float32BufferAttribute(rp,3));rg.setIndex([0,1,2,0,2,3,0,4,1,3,2,5,0,3,5,0,5,4,1,4,5,1,5,2]);rg.computeVertexNormals();
-  const ramp=new THREE.Mesh(rg,new THREE.MeshStandardMaterial({color:0xd6c7ad,roughness:.9,side:THREE.DoubleSide}));ramp.castShadow=true;
+  const ramp=new THREE.Mesh(rg,new THREE.MeshStandardMaterial({color:0x5c6268,roughness:.9,side:THREE.DoubleSide}));ramp.castShadow=true;
   const objects=[ball,block,ramp];for(const o of objects){o.visible=false;scene.add(o);}
   const cvt=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),-Math.PI/2),objectQuat=new THREE.Quaternion();
-  function resetCamera(){const p=state.position;if(course&&!follow){controls.target.set(1.4,0,-.5);camera.position.set(3.8,3.8,3.9);controls.maxDistance=8;}else{controls.target.set(p[0],.13,-p[1]);camera.position.set(p[0]+(course?1.05:.54),course?1.05:.34,-p[1]+(course?1.1:.65));}controls.update();}
+  function resetCamera(){const p=state.position;if(course&&!follow){controls.target.set(2.7,0,0);camera.position.set(5.1,5.5,5);controls.maxDistance=18;}else{controls.target.set(p[0],.13,-p[1]);camera.position.set(p[0]+(course?.65:.54),course?1.35:.34,-p[1]+(course?1.45:.65));}controls.update();}
   resetCamera();
   const observer=new ResizeObserver(()=>{const w=container.clientWidth,h=container.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();});observer.observe(container);
   function dispose(){
     if(disposed)return;disposed=true;cancelAnimationFrame(raf);observer.disconnect();controls.dispose();worker?.terminate();
     for(const {reject} of pending.values())reject(new Error('Simulation disposed.'));pending.clear();
-    scene.traverse(o=>{if(o.isMesh){if(!o.userData.meshName)o.geometry?.dispose();const mats=Array.isArray(o.material)?o.material:[o.material];for(const m of mats)m?.dispose();}});
+    scene.traverse(o=>{if(o.isMesh){if(!o.userData.meshName)o.geometry?.dispose();const mats=Array.isArray(o.material)?o.material:[o.material];for(const m of mats){m?.map?.dispose();m?.dispose();}}});
     renderer.dispose();renderer.domElement.remove();options.signal?.removeEventListener('abort',dispose);
   }
   options.signal?.addEventListener('abort',dispose,{once:true});
@@ -69,7 +69,7 @@ export async function createSimulation(container, options={}) {
   }
   raf=requestAnimationFrame(frame);
   try{
-    const k=await loadKinematics(`${MODEL_DIR}/kinematics.json`);progress('Robot kinematic hierarchy');
+    const k=await loadKinematics(`${MODEL_DIR}/kinematics${options.mode==='rollers'?'_rollers':''}.json`);progress('Robot kinematic hierarchy');
     await loadGlbGeometries();progress('Original GPU geometry');
     rig=await buildRig(k,{materialForMesh:materialHookFor(VARIANTS[options.cosmetic]||VARIANTS.classic)});progress('Original Microduck assembled');
     if(disposed)throw new DOMException('Simulation cancelled','AbortError');
@@ -87,12 +87,13 @@ export async function createSimulation(container, options={}) {
           else if(m.type==='ready'){options.signal?.removeEventListener('abort',onAbort);resolve();}
           else if(m.type==='error'){state.error=m.error;state.paused=true;options.onDiagnostics?.({...state});reject(new Error(m.error));}
           else if(m.type==='warning'){state.error=m.error;options.onDiagnostics?.({...state});}
-          else if(m.type==='reply'){const p=pending.get(m.id);if(p){pending.delete(m.id);m.error?p.reject(new Error(m.error)):p.resolve();}}
+          else if(m.type==='reply'){const p=pending.get(m.id);if(p){pending.delete(m.id);m.error?p.reject(new Error(m.error)):p.resolve(m.result);}}
           else if(m.type==='state'){
             const q=m.state,trunk=rig.bodies.get('trunk_base');trunk.position.set(q[0],q[1],q[2]);trunk.quaternion.set(q[4],q[5],q[6],q[3]);
             for(let j=0;j<14;j++)setJoint(rig,JOINT_NAMES[j],q[7+j]);
+            for(const [name,angle] of m.extraJoints||[])setJoint(rig,name,angle);
             state.position=[q[0],q[1],q[2]];
-            for(let j=0;j<3;j++){const at=21+j*7,o=objects[j];o.visible=Math.abs(q[at])<5&&Math.abs(q[at+1])<5;o.position.set(q[at],q[at+2],-q[at+1]);objectQuat.set(q[at+4],q[at+5],q[at+6],q[at+3]);o.quaternion.copy(cvt).multiply(objectQuat).multiply(cvt.clone().invert());}
+            for(let j=0;j<3;j++){const at=21+j*7,o=objects[j];o.visible=(course?j<2:Math.abs(q[at])<8&&Math.abs(q[at+1])<8);o.position.set(q[at],q[at+2],-q[at+1]);objectQuat.set(q[at+4],q[at+5],q[at+6],q[at+3]);o.quaternion.copy(cvt).multiply(objectQuat).multiply(cvt.clone().invert());}
             if(m.trial){course?.update(m.trial);options.onTrial?.(m.trial);}
             if(m.diagnostics){state={...state,...m.diagnostics,rendererFps:state.rendererFps};const heap=performance.memory?.usedJSHeapSize;if(heap)state.memoryBytes=heap;options.onDiagnostics?.({...state});}
           }
@@ -103,7 +104,7 @@ export async function createSimulation(container, options={}) {
     return {
       setCommand(vx,wz){if(!Number.isFinite(vx)||!Number.isFinite(wz))throw new Error('Velocity must be finite.');worker?.postMessage({type:'command',vx,wz});},
       action:action=>request('action',{action}),pause(paused){state.paused=!!paused;worker?.postMessage({type:'pause',paused:!!paused});},
-      reset:()=>{state.error=undefined;return request('reset');},startTrial:async()=>{state.error=undefined;await request('startTrial');follow=true;resetCamera();},setCosmetic,setQuality,step:()=>request('step'),getState:()=>({...state,position:[...state.position],jointPositions:[...state.jointPositions]}),
+      reset:()=>{state.error=undefined;return request('reset');},startTrial:async(options={})=>{state.error=undefined;await request('startTrial',options);follow=true;resetCamera();},assist:kind=>{state.error=undefined;return request('assist',{kind});},getRun:()=>request('getRun'),setCosmetic,setQuality,step:()=>request('step'),getState:()=>({...state,position:[...state.position],jointPositions:[...state.jointPositions]}),
       screenshot:()=>new Promise((resolve,reject)=>renderer.domElement.toBlob(b=>b?resolve(b):reject(new Error('Screenshot encoding failed.')),'image/png')),
       captureStream:(fps=30)=>renderer.domElement.captureStream(fps),setFollowCamera:v=>{follow=!!v;resetCamera();},resetCamera,
       addObject:kind=>request('object',{kind}),perturb:()=>request('perturb'),dispose

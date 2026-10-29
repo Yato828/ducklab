@@ -9,6 +9,11 @@ export function crossedGate(before, after, gate) {
   return Math.abs(-x*n[1]+y*n[0])<=gate.width/2;
 }
 export class TimeTrial {
+ /** @type {Record<string, boolean>} */
+ completed={};
+ /** @type {Array<{kind:string,step:number,seconds:number}>} */
+ assists=[];
+ status='ready'; next=0; elapsed=0; raw=0; penalties=0; startedAt=0; lastTime=0; hold=0;
  constructor(course=COURSE){this.course=course;this.reset();}
  reset(){this.status='ready';this.next=0;this.elapsed=0;this.raw=0;this.penalties=0;this.assists=[];this.startedAt=0;this.lastTime=0;this.previous=null;this.previousBall=null;this.splits=[];this.completed={};this.hold=0;this.rolled=false;this.kicked=false;this.event=null;return this.snapshot();}
  start(simTime,position){if(this.status!=='ready')throw new Error('Restart before starting a new run.');if(!Number.isFinite(simTime))throw new Error('Invalid simulation time.');this.status='running';this.startedAt=simTime;this.lastTime=simTime;this.previous=position.slice(0,2);return this.snapshot();}
@@ -26,7 +31,7 @@ export class TimeTrial {
     if(this.kicked&&this.previousBall&&ball[2]<c.football.height-c.football.radius&&ball[2]>=0&&crossedGate(this.previousBall,ball,{...g,width:g.width-2*c.football.radius}))complete('football','GOAL!');
    }
    if(stage.id==='box'&&physical.block){const p=physical.block,inside=Math.abs(p[0]-c.box.target[0])<=c.box.targetHalf-Math.SQRT2*c.box.half&&Math.abs(p[1]-c.box.target[1])<=c.box.targetHalf-Math.SQRT2*c.box.half&&p[2]<.09;this.hold=inside&&(physical.blockSpeed??Infinity)<.10?this.hold+1:0;if(this.hold>=c.box.holdTicks)complete('box','BOX LOCKED IN');}
-   if(stage.id==='sit'){const inside=Math.hypot(position[0]-c.sit.center[0],position[1]-c.sit.center[1])<=c.sit.radius-.07;const seated=inside&&position[2]<c.sit.maxHeight&&position[2]>.035&&(physical.gravityZ??0)<-.7&&(physical.robotSpeed??Infinity)<.09;this.hold=seated?this.hold+1:0;if(this.hold>=c.sit.holdTicks)complete('sit','NICE SEAT. NOW STAND.');}
+   if(stage.id==='sit'){const inside=Math.hypot(position[0]-c.sit.center[0],position[1]-c.sit.center[1])<=c.sit.radius-.07;const seated=physical.mode==='sitstand'&&inside&&position[2]<c.sit.maxHeight&&position[2]>.035&&(physical.gravityZ??0)<-.7&&(physical.robotSpeed??Infinity)<.09;this.hold=seated?this.hold+1:0;if(this.hold>=c.sit.holdTicks)complete('sit','NICE SEAT. NOW STAND.');}
    if(stage.id==='roll'){const inside=Math.abs(position[0]-c.roll.center[0])<c.roll.half[0]&&Math.abs(position[1]-c.roll.center[1])<c.roll.half[1];if(!inside){this.rolled=false;this.hold=0;}else{if(physical.mode==='roll'&&(physical.gravityZ??-1)>-.15)this.rolled=true;this.hold=this.rolled&&(physical.gravityZ??0)<-.88&&position[2]>.095?this.hold+1:0;if(this.hold>=c.roll.holdTicks)complete('roll','CONTROLLED CHAOS');}}
   }
   const gate=c.checkpoints[this.next]??c.finish;

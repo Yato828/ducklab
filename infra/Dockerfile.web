@@ -7,6 +7,14 @@ COPY packages/game-core ./packages/game-core
 COPY packages/simulation-core ./packages/simulation-core
 COPY packages/solana/src/amounts.ts packages/solana/src/balance.ts ./packages/solana/src/
 COPY tsconfig.json ./
+COPY scripts/pin-gameplay.mjs ./scripts/pin-gameplay.mjs
+ARG VITE_PROJECT_NAME=DUCKLAB
+ARG VITE_QUACK_TOKEN_SYMBOL=QUACK
+ARG VITE_OFFICIAL_X_URL=
+ARG VITE_OFFICIAL_TELEGRAM_URL=
+ARG VITE_OFFICIAL_PUMPFUN_URL=
+ARG VITE_OFFICIAL_DEXSCREENER_URL=
+ARG VITE_LEADERBOARD_API_URL=/api
 ARG VITE_SOLANA_CLUSTER=devnet
 ARG VITE_SOLANA_RPC_URL=https://api.devnet.solana.com
 ARG VITE_QUACK_TOKEN_MINT=

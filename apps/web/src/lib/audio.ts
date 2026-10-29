@@ -1,0 +1,3 @@
+let context:AudioContext|undefined;
+export function unlockAudio(){try{context??=new AudioContext();if(context.state==='suspended')void context.resume().catch(()=>{});}catch{}}
+export function goalSound(){if(!context||context.state!=='running')return;for(const [i,f] of [523.25,659.25,783.99].entries()){const oscillator=context.createOscillator(),gain=context.createGain(),t=context.currentTime+i*.09;oscillator.frequency.value=f;oscillator.type='sine';gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(.07,t+.01);gain.gain.exponentialRampToValueAtTime(.001,t+.22);oscillator.connect(gain);gain.connect(context.destination);oscillator.start(t);oscillator.stop(t+.23);}}

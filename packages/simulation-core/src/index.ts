@@ -1,5 +1,5 @@
-export type RobotAction = 'sit' | 'stand' | 'roll' | 'kickL' | 'kickR' | 'groundpick' | 'recover';
-import type { TrialState, Cosmetic, Quality } from '../../game-core/src/types';
+export type RobotAction = 'sit' | 'stand' | 'roll' | 'kickL' | 'kickR' | 'groundpick' | 'recover' | 'crouch';
+import type { TrialState, Cosmetic, Quality, RunLog } from '../../game-core/src/types';
 export interface SimulationDiagnostics {
   simTime: number;
   simulationHz: number;
@@ -16,6 +16,8 @@ export interface SimulationDiagnostics {
   yaw: number;
   robotVersion: string;
   policyVersion: string;
+  ball?: number[];
+  block?: number[];
   memoryBytes?: number;
   error?: string;
 }
@@ -25,7 +27,9 @@ export interface Simulation {
   action(action: RobotAction): Promise<void>;
   pause(paused: boolean): void;
   reset(): Promise<void>;
-  startTrial(): Promise<void>;
+  startTrial(options?: {paused?: boolean}): Promise<void>;
+  assist(kind: 'ball' | 'block' | 'rescue'): Promise<void>;
+  getRun(): Promise<RunLog>;
   setCosmetic(cosmetic: Cosmetic): void;
   setQuality(quality: Quality): void;
   step(): Promise<void>;
@@ -44,7 +48,7 @@ export interface SimulationOptions {
   onProgress?: (progress: SimulationProgress) => void;
   onDiagnostics?: (diagnostics: SimulationDiagnostics) => void;
   onTrial?: (state: TrialState) => void;
-  mode?: 'playground' | 'course';
+  mode?: 'playground' | 'course' | 'rollers';
   cosmetic?: Cosmetic;
   quality?: Quality;
   /** Original model and standing pose only. Full physics loads when false. */
